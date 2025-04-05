@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0">
+    <endpoint name="AppointmentService"
+              implementation="com.example.p1backend.soap.impl.AppointmentSoapServiceImpl"
+              url-pattern="/soap/appointments"/>
+
+    <endpoint name="UserService"
+              implementation="com.example.p1backend.soap.impl.UserSoapServiceImpl"
+              url-pattern="/soap/users"/>
+</endpoints>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+    <jdbc-connection-pool name="OraclePool"
+                          datasource-classname="oracle.jdbc.pool.OracleDataSource"
+                          res-type="javax.sql.DataSource">
+        <property name="URL" value="jdbc:oracle:thin:@//localhost:1521/MEDPDB"/>
+        <property name="user" value="medadmin"/>
+        <property name="password" value="12345"/>
+    </jdbc-connection-pool>
+
+    <jdbc-resource jndi-name="jdbc/OracleDS" pool-name="OraclePool"/>
+</resources>
