@@ -5,7 +5,7 @@ COPY . .
 RUN mvn clean package
 
 # Runtime stage
-FROM glassfish/server:7.0.0
+FROM omnifish/glassfish:7.0.15
 
 # Database Configuration
 ARG ORACLE_PDB=MEDPDB
