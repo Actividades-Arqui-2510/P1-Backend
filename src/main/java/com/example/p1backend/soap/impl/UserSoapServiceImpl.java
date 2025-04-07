@@ -2,7 +2,6 @@ package com.example.p1backend.soap.impl;
 
 import com.example.p1backend.dto.DoctorDTO;
 import com.example.p1backend.dto.PatientDTO;
-import com.example.p1backend.model.Patient;
 import com.example.p1backend.service.UserService;
 import com.example.p1backend.soap.UserSoapService;
 import jakarta.annotation.PostConstruct;
