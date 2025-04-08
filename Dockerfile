@@ -6,6 +6,7 @@ RUN mvn clean package
 
 # Runtime stage
 FROM omnifish/glassfish:7.0.15
+ENV GLASSFISH_HOME=/opt/glassfish7
 
 # Database Configuration
 ARG ORACLE_PDB=MEDPDB
@@ -25,17 +26,20 @@ ENV ORACLE_PDB=${ORACLE_PDB} \
     APP_ENV=production
 
 # Copy Oracle JDBC driver
-ADD https://repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc11/23.4.0.24.05/ojdbc11-23.4.0.24.05.jar ${GLASSFISH_HOME}/glassfish/domains/domain1/lib/
+USER root
+ADD --chmod=644 https://repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc11/23.4.0.24.05/ojdbc11-23.4.0.24.05.jar ${GLASSFISH_HOME}/glassfish/domains/domain1/lib/
 
 # Copy deployment artifacts
 COPY --from=build /app/target/ROOT.war ${GLASSFISH_HOME}/glassfish/domains/domain1/autodeploy/
 
 # Copy the configuration script
-COPY docker/glassfish_setup.sh ${GLASSFISH_HOME}/bin/
-RUN chmod +x ${GLASSFISH_HOME}/bin/glassfish_setup.sh
+COPY --chmod=755 docker/glassfish_setup.sh ${GLASSFISH_HOME}/bin/
+
+# Execute setup mode during build (no blocking)
+RUN ${GLASSFISH_HOME}/bin/glassfish_setup.sh setup
 
 # Expose ports
-EXPOSE 8080
+EXPOSE 8080 4848
 
 # Start GlassFish with configuration
-CMD ["${GLASSFISH_HOME}/bin/glassfish_setup.sh"]
+CMD /opt/glassfish7/bin/glassfish_setup.sh run
