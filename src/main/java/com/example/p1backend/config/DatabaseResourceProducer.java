@@ -5,16 +5,17 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.AllArgsConstructor;
 
 import javax.sql.DataSource;
 
 @ApplicationScoped
+@AllArgsConstructor(onConstructor_ = @Inject)
 public class DatabaseResourceProducer {
 
     @Resource(lookup = "jdbc/OraclePool")
     private DataSource dataSource;
-    
-    @Inject
+
     @Named("isProduction")
     private boolean isProduction;
 
