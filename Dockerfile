@@ -29,8 +29,8 @@ ENV ORACLE_PDB=${ORACLE_PDB} \
 USER root
 ADD --chmod=644 https://repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc11/23.4.0.24.05/ojdbc11-23.4.0.24.05.jar ${GLASSFISH_HOME}/glassfish/domains/domain1/lib/
 
-# Copy deployment artifacts
-COPY --from=build /app/target/ROOT.war ${GLASSFISH_HOME}/glassfish/domains/domain1/autodeploy/
+# Copy deployment artifacts with explicit permissions
+COPY --from=build --chmod=644 /app/target/ROOT.war ${GLASSFISH_HOME}/glassfish/domains/domain1/autodeploy/
 
 # Copy the configuration script
 COPY --chmod=755 docker/glassfish_setup.sh ${GLASSFISH_HOME}/bin/
