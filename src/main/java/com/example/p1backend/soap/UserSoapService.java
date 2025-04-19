@@ -51,11 +51,13 @@ public interface UserSoapService {
 
     @WebMethod
     @WebResult(name = "patient")
-    PatientDTO savePatient(@WebParam(name = "patient") PatientDTO patient);
+    PatientDTO savePatient(@WebParam(name = "patient") PatientDTO patient,
+                           @WebParam(name = "password") String password);
 
     @WebMethod
     @WebResult(name = "doctor")
-    DoctorDTO saveDoctor(@WebParam(name = "doctor") DoctorDTO doctor);
+    DoctorDTO saveDoctor(@WebParam(name = "doctor") DoctorDTO doctor,
+                         @WebParam(name = "password") String password);
 
     @WebMethod
     @WebResult(name = "patient")

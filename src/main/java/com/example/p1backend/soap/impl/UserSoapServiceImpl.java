@@ -73,13 +73,13 @@ public class UserSoapServiceImpl implements UserSoapService {
     }
 
     @Override
-    public PatientDTO savePatient(PatientDTO patient) {
-        return userService.savePatient(patient);
+    public PatientDTO savePatient(PatientDTO patient, String password) {
+        return userService.savePatient(patient, password);
     }
 
     @Override
-    public DoctorDTO saveDoctor(DoctorDTO doctor) {
-        return userService.saveDoctor(doctor);
+    public DoctorDTO saveDoctor(DoctorDTO doctor, String password) {
+        return userService.saveDoctor(doctor, password);
     }
 
     @Override

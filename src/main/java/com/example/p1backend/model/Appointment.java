@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -13,7 +13,8 @@ import java.time.LocalDate;
 @Table(name = "APPOINTMENTS")
 public class Appointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appointment_seq")
+    @SequenceGenerator(name = "appointment_seq", sequenceName = "APPOINTMENT_SEQ", allocationSize = 1)
     @Column(name = "APPOINTMENT_ID", nullable = false)
     private Long appointmentId;
 
@@ -35,9 +36,9 @@ public class Appointment {
     private String notes;
 
     @Column(name = "START_TIME", nullable = false)
-    private Instant startTime;
+    private LocalTime startTime;
 
     @Column(name = "END_TIME", nullable = false)
-    private Instant endTime;
+    private LocalTime endTime;
 
 }

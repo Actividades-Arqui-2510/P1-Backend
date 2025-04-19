@@ -14,7 +14,8 @@ import java.util.Set;
 @Table(name = "PATIENTS")
 public class Patient {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_seq")
+    @SequenceGenerator(name = "patient_seq", sequenceName = "PATIENT_SEQ", allocationSize = 1)
     @Column(name = "PATIENT_ID", nullable = false)
     private Long patientId;
 

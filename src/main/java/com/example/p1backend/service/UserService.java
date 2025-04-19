@@ -9,6 +9,7 @@ import com.example.p1backend.model.Patient;
 import com.example.p1backend.repository.impl.DoctorRepositoryImpl;
 import com.example.p1backend.repository.impl.PatientRepositoryImpl;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import jakarta.inject.Inject;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -87,24 +88,23 @@ public class UserService {
         return null;
     }
 
-    public PatientDTO savePatient(PatientDTO patient) {
-        if (patientRepository.findOptionalBy(patient.getPatientId()).isPresent()) {
-            throw new IllegalArgumentException("Patient with ID " + patient.getPatientId() + " already exists.");
-        } else {
-            Patient savedPatient = patientRepository.save(patientMapper.toEntity(patient));
-            return patientMapper.toDto(savedPatient);
-        }
+    @Transactional
+    public PatientDTO savePatient(PatientDTO patient, String password) {
+        Patient savedPatient = patientMapper.toEntity(patient);
+        savedPatient.setPassword(password);
+        savedPatient = patientRepository.save(savedPatient);
+        return patientMapper.toDto(savedPatient);
     }
 
-    public DoctorDTO saveDoctor(DoctorDTO doctor) {
-        if (doctorRepository.findOptionalBy(doctor.getDoctorId()).isPresent()) {
-            throw new IllegalArgumentException("Doctor with ID " + doctor.getDoctorId() + " already exists.");
-        } else {
-            Doctor savedDoctor = doctorRepository.save(doctorMapper.toEntity(doctor));
-            return doctorMapper.toDto(savedDoctor);
-        }
+    @Transactional
+    public DoctorDTO saveDoctor(DoctorDTO doctor, String password) {
+        Doctor savedDoctor = doctorMapper.toEntity(doctor);
+        savedDoctor.setPassword(password);
+        savedDoctor = doctorRepository.save(savedDoctor);
+        return doctorMapper.toDto(savedDoctor);
     }
 
+    @Transactional
     public PatientDTO updatePatient(PatientDTO patient) {
         if (patientRepository.findOptionalBy(patient.getPatientId()).isPresent()) {
             Patient updatedPatient = patientRepository.save(patientMapper.toEntity(patient));
@@ -114,6 +114,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public DoctorDTO updateDoctor(DoctorDTO doctor) {
         if (doctorRepository.findOptionalBy(doctor.getDoctorId()).isPresent()) {
             Doctor updatedDoctor = doctorRepository.save(doctorMapper.toEntity(doctor));
@@ -123,6 +124,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public void deletePatient(Long id) {
         Patient patient = patientRepository.findOptionalBy(id).orElse(null);
         if (patient != null) {
@@ -132,6 +134,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public void deleteDoctor(Long id) {
         Doctor doctor = doctorRepository.findOptionalBy(id).orElse(null);
         if (doctor != null) {

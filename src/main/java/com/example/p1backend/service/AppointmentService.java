@@ -6,6 +6,7 @@ import com.example.p1backend.model.Appointment;
 import com.example.p1backend.repository.impl.AppointmentRepositoryImpl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -47,15 +48,14 @@ public class AppointmentService {
                 .toList();
     }
 
+    @Transactional
     public AppointmentDTO saveAppointment(AppointmentDTO appointment) {
-        if(appointmentRepository.findOptionalBy(appointment.getAppointmentId()).isPresent()) {
-            throw new IllegalArgumentException("Appointment with ID " + appointment.getAppointmentId() + " already exists.");
-        } else {
-            Appointment savedAppointment = appointmentRepository.save(appointmentMapper.toEntity(appointment));
-            return appointmentMapper.toDto(savedAppointment);
-        }
+        Appointment savedAppointment = appointmentMapper.toEntity(appointment);
+        savedAppointment = appointmentRepository.save(savedAppointment);
+        return appointmentMapper.toDto(savedAppointment);
     }
 
+    @Transactional
     public AppointmentDTO updateAppointment(AppointmentDTO appointment) {
         if(appointmentRepository.findOptionalBy(appointment.getAppointmentId()).isPresent()) {
             Appointment updatedAppointment = appointmentRepository.save(appointmentMapper.toEntity(appointment));
@@ -65,6 +65,7 @@ public class AppointmentService {
         }
     }
 
+    @Transactional
     public void deleteAppointment(Long id) {
         Optional<Appointment> appointment = appointmentRepository.findOptionalBy(id);
         if (appointment.isPresent()) {
