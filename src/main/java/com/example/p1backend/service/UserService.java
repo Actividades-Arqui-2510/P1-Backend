@@ -106,22 +106,26 @@ public class UserService {
 
     @Transactional
     public PatientDTO updatePatient(PatientDTO patient) {
-        if (patientRepository.findOptionalBy(patient.getPatientId()).isPresent()) {
-            Patient updatedPatient = patientRepository.save(patientMapper.toEntity(patient));
-            return patientMapper.toDto(updatedPatient);
-        } else {
-            throw new IllegalArgumentException("Patient with ID " + patient.getPatientId() + " does not exist.");
-        }
+        Patient existingPatient = patientRepository.findOptionalBy(patient.getPatientId())
+                .orElseThrow(() -> new IllegalArgumentException("Patient with ID " + patient.getPatientId() + " does not exist."));
+
+        Patient updatedPatient = patientMapper.toEntity(patient);
+        updatedPatient.setPassword(existingPatient.getPassword());
+
+        updatedPatient = patientRepository.save(updatedPatient);
+        return patientMapper.toDto(updatedPatient);
     }
 
     @Transactional
     public DoctorDTO updateDoctor(DoctorDTO doctor) {
-        if (doctorRepository.findOptionalBy(doctor.getDoctorId()).isPresent()) {
-            Doctor updatedDoctor = doctorRepository.save(doctorMapper.toEntity(doctor));
-            return doctorMapper.toDto(updatedDoctor);
-        } else {
-            throw new IllegalArgumentException("Doctor with ID " + doctor.getDoctorId() + " does not exist.");
-        }
+        Doctor existingDoctor = doctorRepository.findOptionalBy(doctor.getDoctorId())
+                .orElseThrow(() -> new IllegalArgumentException("Doctor with ID " + doctor.getDoctorId() + " does not exist."));
+
+        Doctor updatedDoctor = doctorMapper.toEntity(doctor);
+        updatedDoctor.setPassword(existingDoctor.getPassword());
+
+        updatedDoctor = doctorRepository.save(updatedDoctor);
+        return doctorMapper.toDto(updatedDoctor);
     }
 
     @Transactional
